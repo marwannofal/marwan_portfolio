@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DeskPad — Counter & Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #000 100%);
+      --card-bg: rgba(15, 23, 42, 0.88);
+      --card-border: rgba(148, 163, 184, 0.20);
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.18);
+      --danger: #f97373;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --radius-lg: 20px;
+      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
+      --blur: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: #020617;
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .app {
+      position: relative;
+      border-radius: var(--radius-lg);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 16px 14px;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.12), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .app-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .title {
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-pill {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 3px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); transform: scale(1); }
+      70%  { box-shadow: 0 0 0 12px rgba(56, 189, 248, 0); transform: scale(1.03); }
+      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); transform: scale(1); }
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(94, 234, 212, 0.9);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* Counter card */
+    .block {
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 10px 11px 10px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.7);
+      position: relative;
+    }
+
+    .block-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .count-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      gap: 10px;
+    }
+
+    .count-number {
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .count-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .counter-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at 30% 0, #1e293b, #020617);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #e5e7eb;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease, background 0.15s ease;
+    }
+
+    .btn-circle:active {
+      transform: translateY(1px) scale(0.96);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      border-color: var(--accent);
+    }
+
+    .btn-reset {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.08s ease;
+    }
+
+    .btn-reset:active {
+      transform: translateY(1px);
+    }
+
+    .btn-reset-danger {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    /* Notes block */
+    .notes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .notes-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .notes-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .notes-shell {
+      position: relative;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 9px 10px 34px;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), #020617);
+      color: var(--text-main);
+      font-size: 13px;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    textarea:focus {
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3);
+    }
+
+    .notes-footer-bar {
+      position: absolute;
+      inset-inline: 6px;
+      bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(30, 64, 175, 0.5);
+      pointer-events: none;
+    }
+
+    .notes-footer-left {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-save-note {
+      pointer-events: auto;
+      border: none;
+      border-radius: 999px;
+      font-size: 11px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      color: #0b1120;
+      font-weight: 600;
+      box-shadow: 0 7px 18px rgba(34, 197, 94, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.1s ease, filter 0.1s ease;
+    }
+
+    .btn-save-note:active {
+      transform: translateY(1px) scale(0.97);
+      box-shadow: 0 2px 10px rgba(34, 197, 94, 0.4);
+      filter: brightness(0.96);
+    }
+
+    .save-pill-state {
+      font-size: 10px;
+      color: rgba(187, 247, 208, 0.95);
+      margin-left: 2px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.2s ease;
+    }
+
+    .save-pill-state.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer {
+      margin-top: 9px;
+      font-size: 10px;
+      text-align: right;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="app">
+      <div class="app-inner">
+        <header class="header">
+          <div class="title-block">
+            <div class="title">
+              DeskPad
+              <span class="title-pill">
+                <span class="pulse-dot"></span>
+                Local-only · JS
+              </span>
+            </div>
+            <div class="subtitle">Tiny counter + note pad, running fully in Safari.</div>
+          </div>
+          <div class="chip">
+            <span class="chip-dot"></span>
+            iPhone sandbox · no backend
+          </div>
+        </header>
+
+        <main class="grid">
+          <!-- Counter block -->
+          <section class="block" aria-label="Counter">
+            <div class="block-label">Counter</div>
+
+            <div class="count-row">
+              <div>
+                <div class="count-number" id="count">0</div>
+                <div class="count-hint">Tap + / – · Long-press idea: sessions, steps, whatever.</div>
+              </div>
+
+              <div class="counter-controls">
+                <button class="btn-circle" id="minusBtn" aria-label="Decrease">−</button>
+                <button class="btn-circle" id="plusBtn" aria-label="Increase">+</button>
+              </div>
+            </div>
+
+            <button class="btn-reset btn-reset-danger" id="resetBtn" type="button">
+              ⭮ Reset counter & note
+            </button>
+          </section>
+
+          <!-- Notes block -->
+          <section class="block" aria-label="Notes">
+            <div class="notes-header">
+              <div class="notes-title">Note</div>
+              <div class="notes-meta" id="notesMeta">Not saved yet</div>
+            </div>
+
+            <div class="notes-shell">
+              <textarea id="notes" placeholder="Write a tiny log, idea, or anything."></textarea>
+
+              <!-- Bottom bar INSIDE the text area area -->
+              <div class="notes-footer-bar">
+                <div class="notes-footer-left" id="notesFooterHint">
+                  Counter + note saved locally only.
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <button class="btn-save-note" id="saveNoteBtn" type="button">
+                    💾 Save note
+                  </button>
+                  <div id="savePillState" class="save-pill-state">Saved</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer class="footer">
+          State is stored in <code>localStorage</code> on this device only.
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Everything inside DOMContentLoaded to be 100% safe
+    document.addEventListener('DOMContentLoaded', function () {
+      var countEl       = document.getElementById('count');
+      var notesEl       = document.getElementById('notes');
+      var notesMetaEl   = document.getElementById('notesMeta');
+      var notesFooterEl = document.getElementById('notesFooterHint');
+      var plusBtn       = document.getElementById('plusBtn');
+      var minusBtn      = document.getElementById('minusBtn');
+      var resetBtn      = document.getElementById('resetBtn');
+      var saveNoteBtn   = document.getElementById('saveNoteBtn');
+      var savePillState = document.getElementById('savePillState');
+
+      var STORAGE_KEY = 'deskpad.counter.note.v1';
+
+      function getCount() {
+        var n = parseInt(countEl.textContent, 10);
+        if (isNaN(n)) return 0;
+        return n;
+      }
+
+      function setCount(value) {
+        countEl.textContent = String(value);
+      }
+
+      function setMeta(text) {
+        if (notesMetaEl) {
+          notesMetaEl.textContent = text;
+        }
+      }
+
+      function touchSavedPill() {
+        if (!savePillState) return;
+        savePillState.classList.add('show');
+        clearTimeout(touchSavedPill._timer);
+        touchSavedPill._timer = setTimeout(function () {
+          savePillState.classList.remove('show');
+        }, 900);
+      }
+
+      function saveState() {
+        var payload = {
+          count: getCount(),
+          notes: notesEl.value || '',
+          ts: Date.now()
+        };
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+          var date = new Date(payload.ts);
+          setMeta('Saved · ' + date.toLocaleTimeString());
+          if (notesFooterEl) {
+            notesFooterEl.textContent = 'Synced · Counter: ' + payload.count;
+          }
+          touchSavedPill();
+        } catch (e) {
+          setMeta('Could not save (localStorage issue)');
+          if (notesFooterEl) {
+            notesFooterEl.textContent = 'Saving failed (localStorage blocked).';
+          }
+        }
+      }
+
+      function loadState() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            setMeta('Not saved yet');
+            return;
+          }
+          var data = JSON.parse(raw);
+          if (typeof data.count === 'number') {
+            setCount(data.count);
+          }
+          if (typeof data.notes === 'string') {
+            notesEl.value = data.notes;
+          }
+          if (data.ts) {
+            var date = new Date(data.ts);
+            setMeta('Loaded · ' + date.toLocaleTimeString());
+          } else {
+            setMeta('Loaded previous session');
+          }
+          if (notesFooterEl) {
+            notesFooterEl.textContent = 'Loaded · Counter: ' + getCount();
+          }
+        } catch (e) {
+          setMeta('Could not load saved state');
+        }
+      }
+
+      // Wire up events
+      plusBtn.addEventListener('click', function () {
+        setCount(getCount() + 1);
+      });
+
+      minusBtn.addEventListener('click', function () {
+        setCount(getCount() - 1);
+      });
+
+      resetBtn.addEventListener('click', function () {
+        setCount(0);
+        notesEl.value = '';
+        setMeta('Reset · not saved');
+        if (notesFooterEl) {
+          notesFooterEl.textContent = 'Reset · remember to save again.';
+        }
+      });
+
+      saveNoteBtn.addEventListener('click', function () {
+        saveState();
+      });
+
+      // Optional: mark as "unsaved" when user edits text
+      notesEl.addEventListener('input', function () {
+        setMeta('Edited · not saved yet');
+      });
+
+      // Initial load
+      loadState();
+    });
+  </script>
+</body>
+</html>
