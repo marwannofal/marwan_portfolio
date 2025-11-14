@@ -2,22 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DeskPad — Counter & Notes</title>
+  <title>DeskPad — Tabs & Themes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
     :root {
+      /* Dark theme defaults */
+      --bg: #020617;
       --bg-gradient: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #000 100%);
-      --card-bg: rgba(15, 23, 42, 0.88);
-      --card-border: rgba(148, 163, 184, 0.20);
+      --card-bg: rgba(15, 23, 42, 0.9);
+      --card-border: rgba(148, 163, 184, 0.25);
       --accent: #38bdf8;
       --accent-soft: rgba(56, 189, 248, 0.18);
       --danger: #f97373;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
+      --chip-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      --textarea-bg: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      --footer-text: #9ca3af;
+
       --radius-lg: 20px;
       --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
       --blur: 18px;
+    }
+
+    body.theme-light {
+      --bg: #f3f4f6;
+      --bg-gradient: radial-gradient(circle at top, #e0f2fe 0, #f3f4f6 40%, #e5e7eb 100%);
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-border: rgba(148, 163, 184, 0.35);
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.06);
+      --danger: #dc2626;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --chip-bg: linear-gradient(135deg, #eff6ff, #e5e7eb);
+      --textarea-bg: radial-gradient(circle at top, #f9fafb, #e5e7eb);
+      --footer-text: #6b7280;
+      --shadow-soft: 0 20px 40px rgba(148, 163, 184, 0.35);
     }
 
     * {
@@ -29,7 +51,7 @@
       margin: 0;
       padding: 16px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: #020617;
+      background: var(--bg);
       background-image: var(--bg-gradient);
       color: var(--text-main);
       min-height: 100vh;
@@ -40,7 +62,7 @@
 
     .shell {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
     }
 
     .app {
@@ -65,6 +87,11 @@
       opacity: 0.9;
       pointer-events: none;
       mix-blend-mode: screen;
+    }
+
+    body.theme-light .app::before {
+      opacity: 0.6;
+      mix-blend-mode: normal;
     }
 
     .app-inner {
@@ -128,12 +155,19 @@
       color: var(--text-muted);
     }
 
+    .right-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
     .chip {
       font-size: 11px;
       padding: 4px 9px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.35);
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      background: var(--chip-bg);
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -147,9 +181,26 @@
       background: rgba(94, 234, 212, 0.9);
     }
 
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 3px 6px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+    }
+
+    .theme-toggle span.icon {
+      font-size: 13px;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
       gap: 14px;
     }
 
@@ -159,7 +210,6 @@
       }
     }
 
-    /* Counter card */
     .block {
       border-radius: 16px;
       background: rgba(15, 23, 42, 0.9);
@@ -167,6 +217,12 @@
       padding: 10px 11px 10px;
       box-shadow: 0 12px 32px rgba(15, 23, 42, 0.7);
       position: relative;
+    }
+
+    body.theme-light .block {
+      background: rgba(249, 250, 251, 0.98);
+      border-color: rgba(209, 213, 219, 0.95);
+      box-shadow: 0 10px 28px rgba(148, 163, 184, 0.45);
     }
 
     .block-label {
@@ -217,6 +273,12 @@
       transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease, background 0.15s ease;
     }
 
+    body.theme-light .btn-circle {
+      background: radial-gradient(circle at 30% 0, #e5e7eb, #cbd5f5);
+      color: #111827;
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
     .btn-circle:active {
       transform: translateY(1px) scale(0.96);
       box-shadow: 0 0 0 rgba(0, 0, 0, 0);
@@ -237,6 +299,11 @@
       transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.08s ease;
     }
 
+    body.theme-light .btn-reset {
+      background: #f9fafb;
+      color: #6b7280;
+    }
+
     .btn-reset:active {
       transform: translateY(1px);
     }
@@ -246,7 +313,51 @@
       color: #fecaca;
     }
 
-    /* Notes block */
+    body.theme-light .btn-reset-danger {
+      color: #b91c1c;
+      background: #fef2f2;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      padding: 4px 9px;
+      font-size: 11px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+    }
+
+    .tab-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+    }
+
+    .tab-btn[data-tab="today"] .tab-dot  { background: #22c55e; }
+    .tab-btn[data-tab="ideas"] .tab-dot  { background: #f97316; }
+    .tab-btn[data-tab="tasks"] .tab-dot  { background: #3b82f6; }
+    .tab-btn[data-tab="custom"] .tab-dot { background: #a855f7; }
+
+    .tab-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: rgba(56, 189, 248, 0.8);
+      transform: translateY(0);
+    }
+
     .notes-header {
       display: flex;
       align-items: center;
@@ -278,15 +389,19 @@
       border-radius: 14px;
       padding: 9px 10px 34px;
       border: 1px solid rgba(55, 65, 81, 0.95);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), #020617);
+      background: var(--textarea-bg);
       color: var(--text-main);
       font-size: 13px;
       line-height: 1.5;
       outline: none;
     }
 
+    body.theme-light textarea {
+      border-color: rgba(209, 213, 219, 1);
+    }
+
     textarea::placeholder {
-      color: rgba(148, 163, 184, 0.7);
+      color: rgba(148, 163, 184, 0.8);
     }
 
     textarea:focus {
@@ -307,6 +422,11 @@
       background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
       border: 1px solid rgba(30, 64, 175, 0.5);
       pointer-events: none;
+    }
+
+    body.theme-light .notes-footer-bar {
+      background: radial-gradient(circle at 0 0, #f9fafb, #e5e7eb);
+      border-color: rgba(129, 140, 248, 0.6);
     }
 
     .notes-footer-left {
@@ -358,7 +478,7 @@
       margin-top: 9px;
       font-size: 10px;
       text-align: right;
-      color: var(--text-muted);
+      color: var(--footer-text);
     }
   </style>
 </head>
@@ -372,14 +492,20 @@
               DeskPad
               <span class="title-pill">
                 <span class="pulse-dot"></span>
-                Local-only · JS
+                Tabs · Themed
               </span>
             </div>
-            <div class="subtitle">Tiny counter + note pad, running fully in Safari.</div>
+            <div class="subtitle">Counter + multi-note workspace, fully local in Safari.</div>
           </div>
-          <div class="chip">
-            <span class="chip-dot"></span>
-            iPhone sandbox · no backend
+          <div class="right-controls">
+            <button class="theme-toggle" id="themeToggle" type="button">
+              <span class="icon" id="themeIcon">🌙</span>
+              <span id="themeLabel">Dark</span>
+            </button>
+            <div class="chip">
+              <span class="chip-dot"></span>
+              iPhone sandbox · localStorage only
+            </div>
           </div>
         </header>
 
@@ -391,7 +517,7 @@
             <div class="count-row">
               <div>
                 <div class="count-number" id="count">0</div>
-                <div class="count-hint">Tap + / – · Long-press idea: sessions, steps, whatever.</div>
+                <div class="count-hint">Tap + / – · Use it for anything: reps, focus blocks, tasks…</div>
               </div>
 
               <div class="counter-controls">
@@ -401,24 +527,40 @@
             </div>
 
             <button class="btn-reset btn-reset-danger" id="resetBtn" type="button">
-              ⭮ Reset counter & note
+              ⭮ Reset counter & all notes
             </button>
           </section>
 
-          <!-- Notes block -->
+          <!-- Notes block with tabs -->
           <section class="block" aria-label="Notes">
+            <div class="block-label">Notes</div>
+
+            <div class="tabs" id="tabs">
+              <button class="tab-btn" data-tab="today" type="button">
+                <span class="tab-dot"></span>Today
+              </button>
+              <button class="tab-btn" data-tab="ideas" type="button">
+                <span class="tab-dot"></span>Ideas
+              </button>
+              <button class="tab-btn" data-tab="tasks" type="button">
+                <span class="tab-dot"></span>Tasks
+              </button>
+              <button class="tab-btn" data-tab="custom" type="button">
+                <span class="tab-dot"></span>Custom
+              </button>
+            </div>
+
             <div class="notes-header">
-              <div class="notes-title">Note</div>
+              <div class="notes-title" id="notesTitle">Today</div>
               <div class="notes-meta" id="notesMeta">Not saved yet</div>
             </div>
 
             <div class="notes-shell">
-              <textarea id="notes" placeholder="Write a tiny log, idea, or anything."></textarea>
+              <textarea id="notes" placeholder="Write for this tab only (Today)."></textarea>
 
-              <!-- Bottom bar INSIDE the text area area -->
               <div class="notes-footer-bar">
                 <div class="notes-footer-left" id="notesFooterHint">
-                  Counter + note saved locally only.
+                  Counter + this tab's note are saved together.
                 </div>
                 <div style="display:flex;align-items:center;gap:4px;">
                   <button class="btn-save-note" id="saveNoteBtn" type="button">
@@ -432,26 +574,44 @@
         </main>
 
         <footer class="footer">
-          State is stored in <code>localStorage</code> on this device only.
+          State is stored in <code>localStorage</code> per tab & theme, on this device only.
         </footer>
       </div>
     </div>
   </div>
 
   <script>
-    // Everything inside DOMContentLoaded to be 100% safe
     document.addEventListener('DOMContentLoaded', function () {
-      var countEl       = document.getElementById('count');
-      var notesEl       = document.getElementById('notes');
-      var notesMetaEl   = document.getElementById('notesMeta');
-      var notesFooterEl = document.getElementById('notesFooterHint');
-      var plusBtn       = document.getElementById('plusBtn');
-      var minusBtn      = document.getElementById('minusBtn');
-      var resetBtn      = document.getElementById('resetBtn');
-      var saveNoteBtn   = document.getElementById('saveNoteBtn');
-      var savePillState = document.getElementById('savePillState');
+      var STORAGE_KEY = 'deskpad.tabs.themed.v1';
 
-      var STORAGE_KEY = 'deskpad.counter.note.v1';
+      var countEl         = document.getElementById('count');
+      var notesEl         = document.getElementById('notes');
+      var notesTitleEl    = document.getElementById('notesTitle');
+      var notesMetaEl     = document.getElementById('notesMeta');
+      var notesFooterHint = document.getElementById('notesFooterHint');
+      var plusBtn         = document.getElementById('plusBtn');
+      var minusBtn        = document.getElementById('minusBtn');
+      var resetBtn        = document.getElementById('resetBtn');
+      var saveNoteBtn     = document.getElementById('saveNoteBtn');
+      var savePillState   = document.getElementById('savePillState');
+      var themeToggle     = document.getElementById('themeToggle');
+      var themeIcon       = document.getElementById('themeIcon');
+      var themeLabel      = document.getElementById('themeLabel');
+      var tabsRoot        = document.getElementById('tabs');
+
+      // Local state representation
+      var state = {
+        count: 0,
+        activeTab: 'today',
+        notes: {
+          today: '',
+          ideas: '',
+          tasks: '',
+          custom: ''
+        },
+        theme: 'dark',
+        ts: null
+      };
 
       function getCount() {
         var n = parseInt(countEl.textContent, 10);
@@ -461,6 +621,19 @@
 
       function setCount(value) {
         countEl.textContent = String(value);
+        state.count = value;
+      }
+
+      function updateThemeUI() {
+        if (state.theme === 'light') {
+          document.body.classList.add('theme-light');
+          themeIcon.textContent = '☀️';
+          themeLabel.textContent = 'Light';
+        } else {
+          document.body.classList.remove('theme-light');
+          themeIcon.textContent = '🌙';
+          themeLabel.textContent = 'Dark';
+        }
       }
 
       function setMeta(text) {
@@ -479,24 +652,23 @@
       }
 
       function saveState() {
-        var payload = {
-          count: getCount(),
-          notes: notesEl.value || '',
-          ts: Date.now()
-        };
+        // Update notes map from current textarea
+        state.notes[state.activeTab] = notesEl.value || '';
+        state.count = getCount();
+        state.ts = Date.now();
 
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-          var date = new Date(payload.ts);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          var date = new Date(state.ts);
           setMeta('Saved · ' + date.toLocaleTimeString());
-          if (notesFooterEl) {
-            notesFooterEl.textContent = 'Synced · Counter: ' + payload.count;
+          if (notesFooterHint) {
+            notesFooterHint.textContent = 'Synced · Tab "' + state.activeTab + '" · Counter: ' + state.count;
           }
           touchSavedPill();
         } catch (e) {
           setMeta('Could not save (localStorage issue)');
-          if (notesFooterEl) {
-            notesFooterEl.textContent = 'Saving failed (localStorage blocked).';
+          if (notesFooterHint) {
+            notesFooterHint.textContent = 'Saving failed (localStorage blocked).';
           }
         }
       }
@@ -509,27 +681,79 @@
             return;
           }
           var data = JSON.parse(raw);
+
           if (typeof data.count === 'number') {
-            setCount(data.count);
+            state.count = data.count;
+            setCount(state.count);
           }
-          if (typeof data.notes === 'string') {
-            notesEl.value = data.notes;
+
+          if (data.notes && typeof data.notes === 'object') {
+            state.notes = Object.assign(state.notes, data.notes);
           }
-          if (data.ts) {
-            var date = new Date(data.ts);
+
+          if (typeof data.activeTab === 'string') {
+            state.activeTab = data.activeTab;
+          }
+
+          if (data.theme === 'light' || data.theme === 'dark') {
+            state.theme = data.theme;
+          }
+
+          state.ts = data.ts || null;
+
+          applyActiveTabUI();
+          updateThemeUI();
+
+          if (state.ts) {
+            var date = new Date(state.ts);
             setMeta('Loaded · ' + date.toLocaleTimeString());
           } else {
             setMeta('Loaded previous session');
           }
-          if (notesFooterEl) {
-            notesFooterEl.textContent = 'Loaded · Counter: ' + getCount();
+
+          if (notesFooterHint) {
+            notesFooterHint.textContent = 'Loaded · Tab "' + state.activeTab + '" · Counter: ' + state.count;
           }
         } catch (e) {
           setMeta('Could not load saved state');
         }
       }
 
-      // Wire up events
+      function applyActiveTabUI() {
+        // Update tab buttons
+        var buttons = tabsRoot.querySelectorAll('.tab-btn');
+        buttons.forEach(function (btn) {
+          var id = btn.getAttribute('data-tab');
+          if (id === state.activeTab) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        // Update title and placeholder
+        var labelMap = {
+          today: 'Today',
+          ideas: 'Ideas',
+          tasks: 'Tasks',
+          custom: 'Custom'
+        };
+        var descMap = {
+          today: 'What matters today?',
+          ideas: 'Ideas, brain dumps, product thoughts…',
+          tasks: 'Tasks, todos, bullets.',
+          custom: 'Use this tab for anything.'
+        };
+
+        var label = labelMap[state.activeTab] || state.activeTab;
+        var desc = descMap[state.activeTab] || 'Write something for this tab.';
+
+        notesTitleEl.textContent = label;
+        notesEl.placeholder = desc;
+        notesEl.value = state.notes[state.activeTab] || '';
+      }
+
+      // Event wiring
       plusBtn.addEventListener('click', function () {
         setCount(getCount() + 1);
       });
@@ -540,10 +764,17 @@
 
       resetBtn.addEventListener('click', function () {
         setCount(0);
+        state.notes = {
+          today: '',
+          ideas: '',
+          tasks: '',
+          custom: ''
+        };
         notesEl.value = '';
+        state.ts = null;
         setMeta('Reset · not saved');
-        if (notesFooterEl) {
-          notesFooterEl.textContent = 'Reset · remember to save again.';
+        if (notesFooterHint) {
+          notesFooterHint.textContent = 'Reset · all tabs cleared. Save again to persist.';
         }
       });
 
@@ -551,12 +782,49 @@
         saveState();
       });
 
-      // Optional: mark as "unsaved" when user edits text
       notesEl.addEventListener('input', function () {
         setMeta('Edited · not saved yet');
       });
 
-      // Initial load
+      themeToggle.addEventListener('click', function () {
+        state.theme = (state.theme === 'dark') ? 'light' : 'dark';
+        updateThemeUI();
+        // Save theme preference immediately (but don’t touch notes/count)
+        try {
+          var existing = localStorage.getItem(STORAGE_KEY);
+          var data = state;
+          if (existing) {
+            data = Object.assign({}, JSON.parse(existing), { theme: state.theme });
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+          // ignore
+        }
+      });
+
+      tabsRoot.addEventListener('click', function (ev) {
+        var target = ev.target;
+        while (target && target !== tabsRoot && !target.classList.contains('tab-btn')) {
+          target = target.parentNode;
+        }
+        if (!target || !target.classList.contains('tab-btn')) return;
+
+        var newTab = target.getAttribute('data-tab');
+        if (!newTab || newTab === state.activeTab) return;
+
+        // Save current note content into state.notes before switching
+        state.notes[state.activeTab] = notesEl.value || '';
+
+        state.activeTab = newTab;
+        applyActiveTabUI();
+        setMeta('Switched tab · not saved yet');
+        if (notesFooterHint) {
+          notesFooterHint.textContent = 'Active tab: "' + state.activeTab + '". Save to persist changes.';
+        }
+      });
+
+      // Initial theme (default dark) before load for less flash
+      updateThemeUI();
       loadState();
     });
   </script>
