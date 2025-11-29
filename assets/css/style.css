@@ -1403,6 +1403,33 @@ textarea.form-input::-webkit-resizer { display: none; }
   .about .article-title { margin-bottom: 20px; }
 
   .about-text { margin-bottom: 40px; }
+  
+  /* Typewriter text in About */
+  .about-typewriter {
+    position: relative;
+    display: inline-block;
+    color: var(--light-gray);
+    font-size: var(--fs-6);
+    font-weight: var(--fw-300);
+    line-height: 1.6;
+  }
+  
+  /* blinking caret */
+  .about-typewriter::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    bottom: 0.15em;
+    width: 2px;
+    height: 1em;
+    background: var(--orange-yellow-crayola);
+    animation: caretBlink 0.8s steps(1) infinite;
+  }
+  
+  @keyframes caretBlink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
 
   /* service */
 
