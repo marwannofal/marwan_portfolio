@@ -569,6 +569,7 @@ html[data-theme="light"] .navbar {
 }
 
 .navbar-link {
+  position: relative;
   color: var(--light-gray);
   font-size: var(--fs-8);
   padding: 20px 7px;
@@ -697,6 +698,33 @@ html[data-theme="light"] .navbar-link.active {
 
 .about-text p { margin-bottom: 15px; }
 
+/* Typewriter text in About */
+.about-typewriter {
+  position: relative;
+  display: inline-block;
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+}
+
+/* blinking caret */
+.about-typewriter::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: 0.15em;
+  width: 2px;
+  height: 1em;
+  background: var(--orange-yellow-crayola);
+  animation: caretBlink 0.8s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
 html[data-theme="light"] .article-title {
   color: #0f172a;
 }
@@ -763,7 +791,7 @@ html[data-theme="light"] .about-text {
 .service-item-text {
   color: var(--light-gray);
   font-size: var(--fs-6);
-  font-weight: var(--fw-3);
+  font-weight: var(--fw-300);
   line-height: 1.6;
 }
 
@@ -972,6 +1000,7 @@ html[data-theme="light"] .about-text {
 
 .project-item > a { width: 100%; }
 
+
 .project-img {
   position: relative;
   width: 100%;
@@ -979,6 +1008,19 @@ html[data-theme="light"] .about-text {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 15px;
+
+  /* moving gradient border */
+  padding: 2px;
+  background: linear-gradient(
+    120deg,
+    #fbbf24,
+    #f97316,
+    #6366f1,
+    #ec4899,
+    #fbbf24
+  );
+  background-size: 300% 300%;
+  animation: gradientBorderMove 6s linear infinite;
 }
 
 .project-img::before {
@@ -1023,6 +1065,8 @@ html[data-theme="light"] .about-text {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: inherit;
+  display: block;
   transition: var(--transition-1);
 }
 
@@ -1046,7 +1090,17 @@ html[data-theme="light"] .about-text {
 }
 
 
-
+@keyframes gradientBorderMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
 
 /*-----------------------------------*\
@@ -1404,32 +1458,6 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .about-text { margin-bottom: 40px; }
   
-  /* Typewriter text in About */
-  .about-typewriter {
-    position: relative;
-    display: inline-block;
-    color: var(--light-gray);
-    font-size: var(--fs-6);
-    font-weight: var(--fw-300);
-    line-height: 1.6;
-  }
-  
-  /* blinking caret */
-  .about-typewriter::after {
-    content: "";
-    position: absolute;
-    right: -3px;
-    bottom: 0.15em;
-    width: 2px;
-    height: 1em;
-    background: var(--orange-yellow-crayola);
-    animation: caretBlink 0.8s steps(1) infinite;
-  }
-  
-  @keyframes caretBlink {
-    0%, 50% { opacity: 1; }
-    50.01%, 100% { opacity: 0; }
-  }
 
   /* service */
 
