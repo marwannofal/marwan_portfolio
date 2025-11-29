@@ -575,6 +575,28 @@ html[data-theme="light"] .navbar {
   transition: color var(--transition-1);
 }
 
+/* underline animation */
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text-gradient-yellow);
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+
+.navbar-link:hover::after {
+  width: 40%;
+}
+
+.navbar-link.active::after {
+  width: 60%;
+}
+
 .navbar-link:hover,
 .navbar-link:focus { color: var(--light-gray-70); }
 
@@ -620,6 +642,20 @@ html[data-theme="light"] .navbar-link.active {
   color: var(--white-2);
 }
 
+.theme-toggle-btn:active {
+  transform: scale(0.96);
+}
+
+/* icon spin */
+.theme-toggle-btn ion-icon {
+  transition: transform 0.3s ease;
+}
+
+/* class added temporarily from JS */
+.theme-icon-rotating {
+  transform: rotate(180deg);
+}
+
 /* داخل الـ navbar */
 .navbar .navbar-theme-toggle {
   display: flex;
@@ -643,6 +679,7 @@ html[data-theme="light"] .navbar-link.active {
     padding: 6px;
   }
 }
+
 
 
 /*-----------------------------------*\
