@@ -134,10 +134,41 @@ if (themeToggleBtn && themeToggleIcon && themeToggleText) {
   updateThemeToggleUI();
 
   themeToggleBtn.addEventListener("click", () => {
-    const currentTheme = root.getAttribute("data-theme") || "dark";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeToggleUI();
-  });
+  const currentTheme = root.getAttribute("data-theme") || "dark";
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+  root.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+
+  // small icon spin animation
+  themeToggleIcon.classList.add("theme-icon-rotating");
+  setTimeout(() => {
+    themeToggleIcon.classList.remove("theme-icon-rotating");
+  }, 300);
+
+  updateThemeToggleUI();
+});
+}
+
+// =======================
+// SCROLL REVEAL
+// =======================
+const revealEls = document.querySelectorAll('.reveal-on-scroll');
+
+if ('IntersectionObserver' in window && revealEls.length > 0) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target); // only animate once
+        }
+      });
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  revealEls.forEach((el) => observer.observe(el));
 }
