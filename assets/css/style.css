@@ -398,8 +398,29 @@ main {
 }
 
 .avatar-box {
+  position: relative;
   background: var(--bg-gradient-onyx);
   border-radius: 20px;
+  overflow: hidden;
+}
+
+/* glowing ring behind avatar */
+.avatar-box::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% 0,
+    rgba(251, 191, 36, 0.55),
+    transparent 60%);
+  opacity: 0.0;
+  pointer-events: none;
+  animation: avatarGlow 4s ease-in-out infinite;
+}
+
+@keyframes avatarGlow {
+  0%, 100% { opacity: 0.0; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
 }
 
 .info-content .name {
@@ -670,6 +691,21 @@ html[data-theme="light"] .about-text {
   z-index: 1;
 }
 
+/* Smooth hover for cards (services + projects) */
+.service-item,
+.project-item .project-img {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.service-item:hover,
+.project-item:hover .project-img {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.25);
+}
+
+
 .service-item::before {
   content: "";
   position: absolute;
@@ -804,7 +840,18 @@ html[data-theme="light"] .about-text {
 
 
 
+/* Scroll reveal base state */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
 
+/* When element becomes visible */
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /*-----------------------------------*\
   #PORTFOLIO
