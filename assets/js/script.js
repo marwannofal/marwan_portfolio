@@ -173,27 +173,93 @@ if ('IntersectionObserver' in window && revealEls.length > 0) {
   revealEls.forEach((el) => observer.observe(el));
 }
 
-// =======================
-// TYPEWRITER EFFECT (ABOUT)
-// =======================
-const typeTarget = document.getElementById("about-typewriter");
+// ===============================
+// Global looping Typewriter for [data-typewriter]
+// ===============================
+function typeText(el, text, speed, endPause) {
+  let i = 0;
 
-if (typeTarget) {
-  const fullText = typeTarget.dataset.text || "";
-  let index = 0;
-  const speed = 25; // كل ما قلّ الرقم صار أسرع
+  // نفضّي النص كل مرّة نعيد فيها الأنيميشن
+  el.textContent = "";
 
-  // نبدأ بالفراغ
-  typeTarget.textContent = "";
+  const interval = setInterval(() => {
+    el.textContent += text.charAt(i);
+    i++;
 
-  const typeChar = () => {
-    if (index <= fullText.length) {
-      typeTarget.textContent = fullText.slice(0, index);
-      index++;
-      setTimeout(typeChar, speed);
+    if (i >= text.length) {
+      clearInterval(interval);
+
+      // لما يخلص النص، ننتظر شوي وبعدين نعيده من جديد
+      setTimeout(() => {
+        typeText(el, text, speed, endPause);
+      }, endPause);
     }
+  }, speed);
+}
+
+function initTypewriterAll() {
+  const elements = document.querySelectorAll('[data-typewriter]');
+  if (!elements.length) return;
+
+  const baseSpeed = 70;      // سرعة الحرف
+  const gapBetween = 600;    // فرق وقت بداية بين كل عنصر والثاني
+  const endPause = 7000;     // كم ملي ثانية ينتظر بعد ما يخلص قبل ما يعيد نفسه
+                             // (تقدر تغيّرها مثلاً لـ 1000 أو 3000)
+
+  elements.forEach((el, index) => {
+    const originalText =
+      el.dataset.text && el.dataset.text.trim().length
+        ? el.dataset.text.trim()
+        : el.textContent.trim();
+
+    // نخزّن النص الأصلي
+    el.dataset.text = originalText;
+
+    // نفرغ النص بالبداية
+    el.textContent = "";
+
+    const startDelay = index * gapBetween;
+
+    // نأخّر بداية كل عنصر شوي عشان يطلعوا ورا بعض مو كلهم مرة وحدة
+    setTimeout(() => {
+      typeText(el, originalText, baseSpeed, endPause);
+    }, startDelay);
+  });
+}
+
+function startTypewriterSafe() {
+  try {
+    initTypewriterAll();
+  } catch (err) {
+    console.error("Typewriter error:", err);
+  }
+}
+
+// نضمن أنه يشتغل سواء الـ DOM جاهز أو لا
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startTypewriterSafe);
+} else {
+  startTypewriterSafe();
+}
+
+// =======================
+// PARALLAX SCROLL FOR STARS
+// =======================
+(function initParallaxStars() {
+  const layers = document.querySelectorAll("[data-parallax]");
+  if (!layers.length) return;
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    layers.forEach((layer) => {
+      const speed = parseFloat(layer.dataset.parallaxSpeed || "0.03");
+      // نحرّك النجوم مع السكروول
+      layer.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
+    });
   };
 
-  // ممكن تأخير بسيط قبل ما يبدأ
-  setTimeout(typeChar, 300);
-}
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
+})();
+

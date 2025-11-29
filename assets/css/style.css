@@ -1,19 +1,3 @@
-/*-----------------------------------*\
-  #style.css
-\*-----------------------------------*/
-
-
-/**
- * copyright 2022 @codewithsadee
- */
-
-
-
-
-
-/*-----------------------------------*\
-  #CUSTOM PROPERTY
-\*-----------------------------------*/
 
 :root {
 
@@ -23,16 +7,19 @@
 
   /* gradient */
 
+/* الخلفيات المتدرجة للكروت/البوكسات – شفافة أكثر */
   --bg-gradient-onyx: linear-gradient(
     to bottom right,
-    hsl(240, 1%, 25%) 3%,
-    hsl(0, 0%, 19%) 97%
+    hsla(240, 1%, 25%, 0.32) 3%,
+    hsla(0, 0%, 19%, 0.20) 97%
   );
+
   --bg-gradient-jet: linear-gradient(
     to bottom right,
-    hsla(240, 1%, 18%, 0.251) 0%,
-    hsla(240, 2%, 11%, 0) 100%
-  ), hsl(240, 2%, 13%);
+    hsla(240, 1%, 18%, 0.28) 0%,
+    hsla(240, 2%, 11%, 0.18) 100%
+  ), hsla(240, 2%, 10%, 0.15);
+
   --bg-gradient-yellow-1: linear-gradient(
     to bottom right,
     hsl(45, 100%, 71%) 0%,
@@ -45,8 +32,8 @@
   ), hsl(240, 2%, 13%);
   --border-gradient-onyx: linear-gradient(
     to bottom right,
-    hsl(0, 0%, 25%) 0%,
-    hsla(0, 0%, 25%, 0) 50%
+    hsla(0, 0%, 25%, 0.40) 0%,
+    hsla(0, 0%, 25%, 0.0) 50%
   );
   --text-gradient-yellow: linear-gradient(
     to right,
@@ -56,13 +43,19 @@
 
   /* solid */
 
-  --jet: hsl(0, 0%, 22%);
-  --onyx: hsl(240, 1%, 17%);
-  --eerie-black-1: hsl(240, 2%, 13%);
-  --eerie-black-2: hsl(240, 2%, 12%);
+  /* حدود أفتح وشفافة أكثر */
+  --jet: hsla(0, 0%, 22%, 0.30);
+
+  /* السطوح الأساسية للكروت */
+  --eerie-black-1: hsla(240, 2%, 13%, 0.26);
+  --eerie-black-2: hsla(240, 2%, 13%, 0.18);
+
+  --onyx: hsla(240, 1%, 17%, 0.22);
   --smoky-black: hsl(0, 0%, 7%);
+
   --white-1: hsl(0, 0%, 100%);
   --white-2: hsl(0, 0%, 98%);
+
   --orange-yellow-crayola: hsl(45, 100%, 72%);
   --vegas-gold: hsl(45, 54%, 58%);
   --light-gray: hsl(0, 0%, 84%);
@@ -115,15 +108,18 @@
 
 /* LIGHT THEME OVERRIDES */
 :root[data-theme="light"] {
-  /* backgrounds & surfaces */
-  --smoky-black: #f3f4f6;
-  --eerie-black-1: #ffffff;
-  --eerie-black-2: #f9fafb;
-  --jet: #d1d5db;
-  --onyx: #e5e7eb;
+  /* الخلفية العامة */
+  --smoky-black: #eef2ff;
 
-  /* text colors */
-  --white-1: #111827;  /* main text */
+  /* الكروت تكون شبه شفافة فوق الخلفية */
+  --eerie-black-1: rgba(255, 255, 255, 0.60);
+  --eerie-black-2: rgba(249, 250, 251, 0.40);
+
+  --jet: rgba(209, 213, 219, 0.35);
+  --onyx: rgba(229, 231, 235, 0.32);
+
+  /* النصوص نفسهم */
+  --white-1: #111827;
   --white-2: #0f172a;
   --light-gray: #4b5563;
   --light-gray-70: rgba(75, 85, 99, 0.7);
@@ -133,18 +129,20 @@
   --vegas-gold: #d97706;
   --bittersweet-shimmer: #dc2626;
 
-  /* gradients adapted for light mode */
+
+  /* gradients زجاجية أكثر */
   --bg-gradient-onyx: linear-gradient(
     to bottom right,
-    #e5e7eb 3%,
-    #f9fafb 97%
+    rgba(229, 231, 235, 0.55) 3%,
+    rgba(249, 250, 251, 0.35) 97%
   );
 
   --bg-gradient-jet: linear-gradient(
     to bottom right,
-    rgba(229, 231, 235, 0.8) 0%,
-    rgba(243, 244, 246, 0.9) 100%
-  ), #f9fafb;
+    rgba(229, 231, 235, 0.32) 0%,
+    rgba(243, 244, 246, 0.26) 100%
+  ), rgba(249, 250, 251, 0.18);
+
 
   --bg-gradient-yellow-1: linear-gradient(
     to bottom right,
@@ -160,8 +158,8 @@
 
   --border-gradient-onyx: linear-gradient(
     to bottom right,
-    #e5e7eb 0%,
-    rgba(229, 231, 235, 0) 50%
+    rgba(229, 231, 235, 0.55) 0%,
+    rgba(229, 231, 235, 0.0) 50%
   );
 
   --text-gradient-yellow: linear-gradient(
@@ -233,12 +231,13 @@ body { background: var(--smoky-black); }
 
 .sidebar,
 article {
+  position: relative;      /* 👈 أضف هذه */
   background: var(--eerie-black-2);
   border: 1px solid var(--jet);
   border-radius: 20px;
   padding: 15px;
   box-shadow: var(--shadow-1);
-  z-index: 1;
+  z-index: 2;
 }
 
 .separator {
@@ -397,31 +396,6 @@ main {
   gap: 15px;
 }
 
-.avatar-box {
-  position: relative;
-  background: var(--bg-gradient-onyx);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-/* glowing ring behind avatar */
-.avatar-box::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: inherit;
-  background: radial-gradient(circle at 20% 0,
-    rgba(251, 191, 36, 0.55),
-    transparent 60%);
-  opacity: 0.0;
-  pointer-events: none;
-  animation: avatarGlow 4s ease-in-out infinite;
-}
-
-@keyframes avatarGlow {
-  0%, 100% { opacity: 0.0; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.03); }
-}
 
 .info-content .name {
   color: var(--white-2);
@@ -698,27 +672,7 @@ html[data-theme="light"] .navbar-link.active {
 
 .about-text p { margin-bottom: 15px; }
 
-/* Typewriter text in About */
-.about-typewriter {
-  position: relative;
-  display: inline-block;
-  color: var(--light-gray);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
-  line-height: 1.6;
-}
 
-/* blinking caret */
-.about-typewriter::after {
-  content: "";
-  position: absolute;
-  right: -3px;
-  bottom: 0.15em;
-  width: 2px;
-  height: 1em;
-  background: var(--orange-yellow-crayola);
-  animation: caretBlink 0.8s steps(1) infinite;
-}
 
 @keyframes caretBlink {
   0%, 50% { opacity: 1; }
@@ -1012,12 +966,12 @@ html[data-theme="light"] .about-text {
   /* moving gradient border */
   padding: 2px;
   background: linear-gradient(
-    120deg,
-    #fbbf24,
-    #f97316,
-    #6366f1,
-    #ec4899,
-    #fbbf24
+  120deg,
+    #fff7e6, /* very light warm off-white */
+    #fde68a, /* soft pale gold */
+    #fbbf24, /* main gold */
+    #fef3c7, /* creamy light gold */
+    #ffffff  /* pure white */
   );
   background-size: 300% 300%;
   animation: gradientBorderMove 6s linear infinite;
@@ -1457,7 +1411,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   .about .article-title { margin-bottom: 20px; }
 
   .about-text { margin-bottom: 40px; }
-  
+
 
   /* service */
 
@@ -1863,4 +1817,531 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .timeline-text { max-width: 700px; }
 
+}
+
+
+/* ===========================
+   4) CSS-ONLY SKILLS RADAR
+   =========================== */
+
+.skills-radar-wrapper {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--bg-gradient-jet);
+  border: 1px solid var(--jet);
+  box-shadow: var(--shadow-2);
+}
+
+.skills-radar-wrapper .skills-title {
+  margin-bottom: 18px;
+}
+
+.skills-radar {
+  position: relative;
+  width: 360px;
+  height: 360px;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+/* base circles */
+.skills-radar-circle {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.skills-radar-bg {
+  background: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.3), transparent 60%);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+/* levels */
+.skills-radar-level {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.skills-radar-level-1 { width: 40%; height: 40%; }
+.skills-radar-level-2 { width: 65%; height: 65%; }
+.skills-radar-level-3 { width: 90%; height: 90%; }
+
+/* spokes */
+.skills-radar-spoke {
+  position: absolute;
+  width: 1px;
+  height: 50%;
+  left: 50%;
+  top: 50%;
+  transform-origin: center bottom;
+  background: rgba(148, 163, 184, 0.45);
+}
+
+.spoke-1 { transform: translateX(-50%) rotate(0deg); }
+.spoke-2 { transform: translateX(-50%) rotate(60deg); }
+.spoke-3 { transform: translateX(-50%) rotate(120deg); }
+.spoke-4 { transform: translateX(-50%) rotate(180deg); }
+.spoke-5 { transform: translateX(-50%) rotate(240deg); }
+.spoke-6 { transform: translateX(-50%) rotate(300deg); }
+
+/* polygon approximation using clip-path */
+.skills-radar-polygon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 88%;
+  height: 88%;
+  background: radial-gradient(circle at 50% 30%, rgba(250, 204, 21, 0.45), transparent 70%);
+  clip-path: polygon(
+    50% 8%,   /* React    */
+    85% 30%,  /* Django   */
+    80% 75%,  /* Node     */
+    50% 95%,  /* .NET     */
+    18% 76%,  /* Mongo    */
+    15% 32%   /* SharePoint */
+  );
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.4);
+  opacity: 0.95;
+}
+
+/* labels */
+.skills-radar-label {
+  position: absolute;
+  font-size: var(--fs-8);
+  color: var(--light-gray);
+  background: rgba(15, 23, 42, 0.65);
+  padding: 4px 8px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.label-1 { top: 3%;  left: 50%; }
+.label-2 { top: 20%; left: 90%; }
+.label-3 { top: 70%; left: 92%; }
+.label-4 { top: 99%; left: 50%; }
+.label-5 { top: 75%; left: 8%; }
+.label-6 { top: 18%; left: 10%; }
+
+/* small pulse animation on polygon */
+.skills-radar-polygon {
+  animation: radarPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes radarPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.4);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 45px rgba(250, 204, 21, 0.65);
+  }
+}
+
+/* === Radar light theme styling === */
+html[data-theme="light"] .skills-radar-wrapper {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+html[data-theme="light"] .skills-radar-bg {
+  background: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.25), transparent 65%);
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+html[data-theme="light"] .skills-radar-level {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+html[data-theme="light"] .skills-radar-polygon {
+  background: radial-gradient(circle at 50% 30%, rgba(250, 204, 21, 0.35), transparent 75%);
+  box-shadow: 0 0 30px rgba(250, 204, 21, 0.28);
+}
+
+/* label chips around the radar */
+html[data-theme="light"] .skills-radar-label {
+  background: rgba(243, 244, 246, 0.95);
+  color: #111827;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+
+/* ===========================
+   5) TECH STACK GLOW RING
+   =========================== */
+
+.avatar-box {
+  position: relative;
+  background: var(--bg-gradient-onyx);
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 4px; /* عشان نظهر البوردَر المتحرك */
+}
+
+/* multi-color tech ring */
+.avatar-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    #fff7e6, /* very light warm off-white */
+    #fde68a, /* soft pale gold */
+    #fbbf24, /* main gold */
+    #fef3c7, /* creamy light gold */
+    #ffffff  /* pure white */
+  );
+  filter: blur(0.7px);
+  z-index: -2;
+  animation: avatarRingRotate 8s linear infinite;
+}
+
+/* inner dark mask to keep only ring visible */
+.avatar-box::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  background: var(--bg-gradient-onyx);
+  z-index: -1;
+}
+
+.avatar-box img {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+}
+
+/* rotation animation */
+@keyframes avatarRingRotate {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.9;
+  }
+}
+
+
+/* ===========================
+   ORBITING TECH ICONS (MULTI RING)
+   =========================== */
+
+.avatar-orbit {
+  position: relative;
+  display: inline-block;
+}
+
+/* الأفاتار نفسه (خليه زي ما هو عندك من قبل) */
+/* .avatar-box { ... } */
+
+/* أيقونات المدار */
+.orbit-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  transform-origin: center center;
+  transform: translate(-50%, -50%);
+  /* متغيرات افتراضية */
+  --orbit-angle: 0deg;
+  --orbit-radius: 70px;
+  --orbit-duration: 14s;
+  animation: orbitAround var(--orbit-duration) linear infinite;
+}
+
+/* دائرة 1 (قريبة) */
+.orbit-ring-1 { --orbit-radius: 70px; }
+
+/* دائرة 2 (أبعد شوي) */
+.orbit-ring-2 { --orbit-radius: 90px; }
+
+/* مثال سرعات مختلفة */
+.orbit-icon-1 { --orbit-angle:   0deg;  --orbit-duration: 12s; }
+.orbit-icon-2 { --orbit-angle:  72deg;  --orbit-duration: 14s; }
+.orbit-icon-3 { --orbit-angle: 144deg;  --orbit-duration: 16s; }
+.orbit-icon-4 { --orbit-angle: 216deg;  --orbit-duration: 18s; }
+.orbit-icon-5 { --orbit-angle: 288deg;  --orbit-duration: 20s; }
+
+/* الحلقة الثانية */
+.orbit-icon-6 { --orbit-angle:  36deg;  --orbit-radius: 90px; --orbit-duration: 22s; }
+.orbit-icon-7 { --orbit-angle: 108deg;  --orbit-radius: 90px; --orbit-duration: 24s; }
+.orbit-icon-8 { --orbit-angle: 180deg;  --orbit-radius: 90px; --orbit-duration: 26s; }
+
+/* مسار الدوران */
+@keyframes orbitAround {
+  0% {
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--orbit-angle))
+      translate(var(--orbit-radius))
+      rotate(calc(-1 * var(--orbit-angle)));
+  }
+  50% {
+    transform:
+      translate(-50%, -50%)
+      rotate(calc(var(--orbit-angle) + 180deg))
+      translate(var(--orbit-radius))
+      rotate(calc(-1 * (var(--orbit-angle) + 180deg)));
+  }
+  100% {
+    transform:
+      translate(-50%, -50%)
+      rotate(calc(var(--orbit-angle) + 360deg))
+      translate(var(--orbit-radius))
+      rotate(calc(-1 * (var(--orbit-angle) + 360deg)));
+  }
+}
+
+/* موبايل */
+@media (max-width: 580px) {
+  .orbit-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    --orbit-radius: 60px;
+  }
+  .orbit-ring-2 {
+    --orbit-radius: 75px;
+  }
+}
+
+
+
+/* ===========================
+   9) MICRO-INTERACTIONS
+   =========================== */
+
+/* general card hover */
+.content-card,
+.service-item,
+.blog-post-item > a {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+/* raise & tilt */
+.content-card:hover,
+.service-item:hover,
+.blog-post-item > a:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.5);
+}
+
+/* subtle shine on content-card */
+.content-card::before {
+  transition: background 0.25s ease;
+}
+
+.content-card:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(250, 204, 21, 0.22),
+    rgba(15, 23, 42, 0.95)
+  );
+}
+
+/* blog cards: slight border & glow */
+.blog-post-item > a:hover::before {
+  background: linear-gradient(
+    140deg,
+    rgba(250, 204, 21, 0.25),
+    rgba(15, 23, 42, 0.95)
+  );
+}
+
+/* timeline bullets glow on hover */
+.timeline-item:hover::after {
+  box-shadow:
+    0 0 0 4px var(--jet),
+    0 0 20px rgba(250, 204, 21, 0.7);
+}
+
+
+/* === Softer hover for skills card in light mode === */
+html[data-theme="light"] .skills-list.content-card {
+  background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+  border-color: #e5e7eb;
+}
+
+/* override the dark shine on hover ONLY in light theme */
+html[data-theme="light"] .skills-list.content-card::before {
+  background: var(--bg-gradient-jet);
+}
+
+html[data-theme="light"] .skills-list.content-card:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.18),
+    rgba(249, 250, 251, 0.98)
+  );
+}
+
+html[data-theme="light"] .skills-list.content-card:hover {
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+
+
+/* ===========================
+   PARALLAX STARFIELD
+   =========================== */
+
+.parallax-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(55, 65, 81, 0.9),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 80% 100%,
+      rgba(251, 191, 36, 0.18),
+      transparent 55%
+    ),
+    #050816; /* نفس الخلفية في الثيمين */
+}
+
+/* طبقة أساس */
+.star-layer {
+  position: absolute;
+  inset: -150px;
+  background-repeat: repeat;
+  background-size: 420px 420px;  /* أصغر = نجوم أكثر */
+  opacity: 0.95;
+  animation: starDrift 40s linear infinite;
+}
+
+/* طبقة 1 – نجوم صغيرة وكثيرة */
+.star-layer-1 {
+  background-image:
+    radial-gradient(5px 5px at 10% 20%, rgba(248, 250, 252, 0.95), transparent 40%),
+    radial-gradient(5px 5px at 80% 10%, rgba(248, 250, 252, 0.95), transparent 40%),
+    radial-gradient(5px 5px at 50% 80%, rgba(248, 250, 252, 0.9),  transparent 40%),
+    radial-gradient(5px 5px at 20% 60%, rgba(249, 250, 251, 0.95), transparent 40%),
+    radial-gradient(5px 5px at 70% 50%, rgba(248, 250, 252, 0.9),  transparent 40%),
+    radial-gradient(5px 5px at 30% 30%, rgba(248, 250, 252, 0.95), transparent 40%),
+    radial-gradient(5px 5px at 90% 60%, rgba(248, 250, 252, 0.9),  transparent 40%),
+    radial-gradient(5px 5px at 5% 85%,  rgba(248, 250, 252, 0.9),  transparent 40%);
+}
+
+/* طبقة 2 – أزرق أوضح وكثيف */
+.star-layer-2 {
+  background-image:
+    radial-gradient(3.5px 3.5px at 15% 75%, rgba(129, 212, 250, 1),   transparent 45%),
+    radial-gradient(3.5px 3.5px at 65% 25%, rgba(191, 219, 254, 1),   transparent 45%),
+    radial-gradient(3.5px 3.5px at 40% 40%, rgba(129, 212, 250, 0.9), transparent 45%),
+    radial-gradient(3.5px 3.5px at 5% 35%,  rgba(191, 219, 254, 0.95),transparent 45%),
+    radial-gradient(3.5px 3.5px at 90% 55%, rgba(129, 212, 250, 0.95),transparent 45%),
+    radial-gradient(3.5px 3.5px at 55% 95%, rgba(129, 212, 250, 0.9), transparent 45%);
+  animation-duration: 55s;
+}
+
+/* طبقة 3 – شهب ذهبية أكثر */
+.star-layer-3 {
+  background-image:
+    radial-gradient(2.5px 2.5px at 30% 30%, rgba(251, 191, 36, 1),    transparent 50%),
+    radial-gradient(2.5px 2.5px at 75% 65%, rgba(248, 250, 252, 0.98), transparent 50%),
+    radial-gradient(2.5px 2.5px at 55% 10%, rgba(251, 191, 36, 0.95), transparent 50%),
+    radial-gradient(2.5px 2.5px at 15% 90%, rgba(251, 191, 36, 0.9),  transparent 50%),
+    radial-gradient(2.5px 2.5px at 92% 15%, rgba(251, 191, 36, 0.95), transparent 50%);
+  animation-duration: 5s;
+}
+
+/* حركة النجوم */
+@keyframes starDrift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 700px; }
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+  .star-layer {
+    opacity: 0.6;
+    filter: blur(0.4px);
+  }
+}
+
+
+/* ===========================
+   LIGHT MODE STARFIELD – BLACK STARS
+   =========================== */
+
+/* keep the light background from body, don't tint it here */
+html[data-theme="light"] .parallax-stars {
+  background: transparent;         /* شفّاف عشان الأبيض اللي تحت يبين */
+}
+
+/* make layers more visible + tighter tiling */
+html[data-theme="light"] .star-layer {
+  opacity: 0.9;
+  background-size: 350px 350px;    /* كثافة نجوم أعلى */
+}
+
+/* Layer 1 – lots of tiny dark dots */
+html[data-theme="light"] .star-layer-1 {
+  background-image:
+    radial-gradient(5px 5px at 5% 10%,   rgba(15,23,42,0.95), transparent 40%),
+    radial-gradient(5px 5px at 20% 30%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 35% 15%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 50% 40%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 70% 20%,  rgba(15,23,42,0.95), transparent 40%),
+    radial-gradient(5px 5px at 85% 35%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 10% 70%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 30% 80%,  rgba(15,23,42,0.95), transparent 40%),
+    radial-gradient(5px 5px at 55% 75%,  rgba(15,23,42,0.9),  transparent 40%),
+    radial-gradient(5px 5px at 80% 65%,  rgba(15,23,42,0.95), transparent 40%),
+    radial-gradient(5px 5px at 95% 85%,  rgba(15,23,42,0.9),  transparent 40%);
+}
+
+/* Layer 2 – slightly bigger dark stars */
+html[data-theme="light"] .star-layer-2 {
+  background-image:
+    radial-gradient(3.5px 3.5px at 15% 50%, rgba(31,41,55,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 40% 25%, rgba(15,23,42,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 65% 45%, rgba(31,41,55,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 85% 30%, rgba(15,23,42,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 25% 80%, rgba(15,23,42,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 55% 90%, rgba(31,41,55,0.95), transparent 45%),
+    radial-gradient(3.5px 3.5px at 80% 75%, rgba(15,23,42,0.95), transparent 45%);
+}
+
+/* Layer 3 – a few bigger “meteors” but still dark */
+html[data-theme="light"] .star-layer-3 {
+  background-image:
+    radial-gradient(2.5px 2.5px at 20% 20%, rgba(17,24,39,0.95), transparent 50%),
+    radial-gradient(2.5px 2.5px at 60% 10%, rgba(15,23,42,0.95), transparent 50%),
+    radial-gradient(2.5px 2.5px at 85% 40%, rgba(17,24,39,0.95), transparent 50%),
+    radial-gradient(2.5px 2.5px at 35% 70%, rgba(15,23,42,0.95), transparent 50%),
+    radial-gradient(2.5px 2.5px at 70% 85%, rgba(17,24,39,0.95), transparent 50%);
 }

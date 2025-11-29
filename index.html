@@ -14,21 +14,41 @@
 </head>
 <body>
   <main>
+    <!-- PARALLAX STARFIELD BACKGROUND -->
+    <div class="parallax-stars">
+      <div class="star-layer star-layer-1" data-parallax data-parallax-speed="0.02"></div>
+      <div class="star-layer star-layer-2" data-parallax data-parallax-speed="0.04"></div>
+      <div class="star-layer star-layer-3" data-parallax data-parallax-speed="0.06"></div>
+    </div>
+
     <!--
       - #SIDEBAR
     -->
     <aside class="sidebar" data-sidebar>
 
       <div class="sidebar-info">
+        <div class="avatar-orbit">
+          <figure class="avatar-box">
+            <img src="https://res.cloudinary.com/dcfyjmi9x/image/upload/w_400,h_400,r_38/v1764402226/IMG_4954_afmat0.jpg" alt="Richard hanrick" width="80">
+          </figure>
+        <!-- orbit icons -->
+        <!-- الحلقة الداخلية -->
+        <span class="orbit-icon orbit-ring-1 orbit-icon-1">⚛️</span>  <!-- React -->
+        <span class="orbit-icon orbit-ring-1 orbit-icon-2">🐍</span>  <!-- Python -->
+        <span class="orbit-icon orbit-ring-1 orbit-icon-3">🟣</span>  <!-- .NET -->
+        <span class="orbit-icon orbit-ring-1 orbit-icon-4">🟢</span>  <!-- Node -->
+        <span class="orbit-icon orbit-ring-1 orbit-icon-5">💾</span>  <!-- DB -->
 
-        <figure class="avatar-box">
-          <img src="https://res.cloudinary.com/dcfyjmi9x/image/upload/w_400,h_400,r_50/v1764402226/IMG_4954_afmat0.jpg" alt="Richard hanrick" width="80">
-        </figure>
+        <!-- الحلقة الخارجية -->
+        <span class="orbit-icon orbit-ring-2 orbit-icon-6">☁️</span>  <!-- Azure -->
+        <span class="orbit-icon orbit-ring-2 orbit-icon-7">📦</span>  <!-- Docker -->
+        <span class="orbit-icon orbit-ring-2 orbit-icon-8">🔁</span>  <!-- Git/CI -->
+      </div>
 
         <div class="info-content">
           <h1 class="name" title="Marwan Nofal">Marwan Nofal</h1>
 
-          <p class="title">Backend Developer</p>
+          <p class="title" data-typewriter>Backend Developer</p>
         </div>
 
         <button class="info_more-btn" data-sidebar-btn>
@@ -150,7 +170,7 @@
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Contact</button>
           </li>
-          
+
           <!-- 🌗 Theme toggle in navbar -->
           <li class="navbar-item navbar-theme-toggle">
             <button class="theme-toggle-btn" id="theme-toggle-btn">
@@ -165,17 +185,17 @@
       <!--
         - #ABOUT
       -->
-      <article class="about  active" data-page="about">
+      <article class="about active" data-page="about">
 
         <header>
           <h2 class="h2 article-title">About me</h2>
         </header>
-
         <section class="about-text">
-          <p
-            class="about-typewriter"
-            id="about-typewriter"
-            data-text="Software engineer with experience in the design and development of innovative solutions. Proficient in Python, C#, TypeScript, JavaScript, Linux and full-stack development using .NET, Django, React, and Next.js. Skilled in Microsoft (Azure, SharePoint, Power Automate) and Agile methodologies.">
+          <p class="about" data-typewriter>
+            Software engineer with experience in the design and development of innovative
+            solutions. Proficient in Python, C#, TypeScript, JavaScript, Linux and full-stack
+            development using .NET, Django, React, and Next.js. Skilled in Microsoft (Azure, SharePoint, Power Automate)
+             and Agile methodologies.
           </p>
         </section>
 
@@ -186,7 +206,7 @@
 
         <section class="service reveal-on-scroll">
 
-          <h3 class="h3 service-title">What i'm doing</h3>
+          <h3 class="h3 service-title" data-typewriter>What i'm doing</h3>
 
           <ul class="service-list">
 
@@ -257,7 +277,7 @@
               <ion-icon name="book-outline"></ion-icon>
             </div>
 
-            <h3 class="h3">Education</h3>
+            <h3 class="h3" data-typewriter>Education</h3>
           </div>
 
           <ol class="timeline-list">
@@ -285,7 +305,7 @@
               <ion-icon name="book-outline"></ion-icon>
             </div>
 
-            <h3 class="h3">Experience</h3>
+            <h3 class="h3" data-typewriter>Experience</h3>
           </div>
 
           <ol class="timeline-list">
@@ -314,7 +334,7 @@
               <ion-icon name="book-outline"></ion-icon>
             </div>
 
-            <h3 class="h3">Certifications</h3>
+            <h3 class="h3" data-typewriter>Certifications</h3>
           </div>
 
           <ol class="timeline-list">
@@ -341,7 +361,7 @@
 
         <section class="skill reveal-on-scroll">
 
-          <h3 class="h3 skills-title">My skills</h3>
+          <h3 class="h3 skills-title" data-typewriter>My skills</h3>
 
           <ul class="skills-list content-card">
 
@@ -424,6 +444,37 @@
             </li>
 
           </ul>
+
+          <div class="skills-radar-wrapper reveal-on-scroll">
+            <h3 class="h3 skills-title" data-typewriter>Tech Stack Radar</h3>
+
+            <div class="skills-radar">
+              <div class="skills-radar-circle skills-radar-bg"></div>
+              <div class="skills-radar-circle skills-radar-level skills-radar-level-1"></div>
+              <div class="skills-radar-circle skills-radar-level skills-radar-level-2"></div>
+              <div class="skills-radar-circle skills-radar-level skills-radar-level-3"></div>
+
+              <!-- خطوط من الوسط للخارج -->
+              <div class="skills-radar-spoke spoke-1"></div>
+              <div class="skills-radar-spoke spoke-2"></div>
+              <div class="skills-radar-spoke spoke-3"></div>
+              <div class="skills-radar-spoke spoke-4"></div>
+              <div class="skills-radar-spoke spoke-5"></div>
+              <div class="skills-radar-spoke spoke-6"></div>
+
+              <!-- شكل البوليجون (تقريبي) -->
+              <div class="skills-radar-polygon"></div>
+
+              <!-- labels حوالين الدائرة -->
+              <span class="skills-radar-label label-1">React</span>
+              <span class="skills-radar-label label-2">Django</span>
+              <span class="skills-radar-label label-3">Node.js</span>
+              <span class="skills-radar-label label-4">.NET</span>
+              <span class="skills-radar-label label-5">MongoDB</span>
+              <span class="skills-radar-label label-6">SharePoint</span>
+            </div>
+            </div>
+
 
         </section>
 
