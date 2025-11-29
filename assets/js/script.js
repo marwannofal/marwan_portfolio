@@ -172,3 +172,28 @@ if ('IntersectionObserver' in window && revealEls.length > 0) {
 
   revealEls.forEach((el) => observer.observe(el));
 }
+
+// =======================
+// TYPEWRITER EFFECT (ABOUT)
+// =======================
+const typeTarget = document.getElementById("about-typewriter");
+
+if (typeTarget) {
+  const fullText = typeTarget.dataset.text || "";
+  let index = 0;
+  const speed = 25; // كل ما قلّ الرقم صار أسرع
+
+  // نبدأ بالفراغ
+  typeTarget.textContent = "";
+
+  const typeChar = () => {
+    if (index <= fullText.length) {
+      typeTarget.textContent = fullText.slice(0, index);
+      index++;
+      setTimeout(typeChar, speed);
+    }
+  };
+
+  // ممكن تأخير بسيط قبل ما يبدأ
+  setTimeout(typeChar, 300);
+}
