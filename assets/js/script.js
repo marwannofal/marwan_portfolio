@@ -100,10 +100,9 @@ for (let i = 0; i < navigationLinks.length; i++) {
       }
     }
   });
-  
-  
-  
-  // =======================
+}
+
+// =======================
 // THEME TOGGLE
 // =======================
 const root = document.documentElement;
@@ -111,32 +110,34 @@ const themeToggleBtn = document.getElementById("theme-toggle-btn");
 const themeToggleIcon = document.getElementById("theme-toggle-icon");
 const themeToggleText = document.getElementById("theme-toggle-text");
 
-// Load saved theme from localStorage (if any)
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light" || savedTheme === "dark") {
-  root.setAttribute("data-theme", savedTheme);
-}
+// Only run if the button exists (avoids errors if HTML not loaded yet)
+if (themeToggleBtn && themeToggleIcon && themeToggleText) {
 
-// Update UI (icon + label) based on current theme
-const updateThemeToggleUI = () => {
-  const currentTheme = root.getAttribute("data-theme") || "dark";
-  if (currentTheme === "dark") {
-    themeToggleIcon.setAttribute("name", "moon-outline");
-    themeToggleText.textContent = "Dark mode";
-  } else {
-    themeToggleIcon.setAttribute("name", "sunny-outline");
-    themeToggleText.textContent = "Light mode";
+  // Load saved theme from localStorage (if any)
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light" || savedTheme === "dark") {
+    root.setAttribute("data-theme", savedTheme);
   }
-};
 
-updateThemeToggleUI();
+  // Update UI (icon + label) based on current theme
+  const updateThemeToggleUI = () => {
+    const currentTheme = root.getAttribute("data-theme") || "dark";
+    if (currentTheme === "dark") {
+      themeToggleIcon.setAttribute("name", "moon-outline");
+      themeToggleText.textContent = "Dark mode";
+    } else {
+      themeToggleIcon.setAttribute("name", "sunny-outline");
+      themeToggleText.textContent = "Light mode";
+    }
+  };
 
-themeToggleBtn.addEventListener("click", () => {
-  const currentTheme = root.getAttribute("data-theme") || "dark";
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  root.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
   updateThemeToggleUI();
-});
-  
+
+  themeToggleBtn.addEventListener("click", () => {
+    const currentTheme = root.getAttribute("data-theme") || "dark";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeToggleUI();
+  });
 }
