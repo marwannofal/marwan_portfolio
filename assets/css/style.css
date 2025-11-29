@@ -120,6 +120,7 @@
   --eerie-black-1: #ffffff;
   --eerie-black-2: #f9fafb;
   --jet: #d1d5db;
+  --onyx: #e5e7eb;
 
   /* text colors */
   --white-1: #111827;  /* main text */
@@ -555,6 +556,11 @@ main {
   border-radius: 12px 12px 0 0;
   box-shadow: var(--shadow-2);
   z-index: 5;
+}
+
+html[data-theme="light"] .navbar {
+  background: rgba(15, 23, 42, 0.08); /* خلفية فاتحة شفافة */
+  border-color: #e5e7eb;
 }
 
 .navbar-list {
